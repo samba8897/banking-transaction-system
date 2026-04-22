@@ -49,7 +49,7 @@ Built with a focus on **data consistency, concurrency safety, and clean architec
 - Layered architecture using controllers, services, and repositories  
 
 
-### 1. Clone the repository
+### Clone the repository
 ```bash
 git clone https://github.com/samba8897/banking-transaction-system.git
 cd banking-transaction-system
