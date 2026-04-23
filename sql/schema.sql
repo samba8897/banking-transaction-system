@@ -24,3 +24,13 @@ CREATE TABLE transactions (
     CONSTRAINT fk_from_account FOREIGN KEY (from_account_id) REFERENCES accounts(id),
     CONSTRAINT fk_to_account FOREIGN KEY (to_account_id) REFERENCES accounts(id)
 );
+
+CREATE TABLE idempotency_keys (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    idempotency_key VARCHAR(100) NOT NULL UNIQUE,
+    request_hash VARCHAR(255) NOT NULL,
+    response_body JSON NULL,
+    status ENUM('PROCESSING', 'COMPLETED', 'FAILED') NOT NULL DEFAULT 'PROCESSING',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

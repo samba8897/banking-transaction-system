@@ -5,6 +5,7 @@ const errorMiddleware = require('./middlewares/error.middleware');
 
 const AccountRepository = require('./repositories/account.repository');
 const TransactionRepository = require('./repositories/transaction.repository');
+const IdempotencyRepository = require('./repositories/idempotency.repository');
 
 const AccountService = require('./services/account.service');
 const TransactionService = require('./services/transaction.service');
@@ -28,12 +29,14 @@ app.get('/health', (req, res) => {
 
 const accountRepository = new AccountRepository();
 const transactionRepository = new TransactionRepository();
+const idempotencyRepository = new IdempotencyRepository();
 
 const accountService = new AccountService(pool, accountRepository);
 const transactionService = new TransactionService(
   pool,
   accountRepository,
-  transactionRepository
+  transactionRepository,
+  idempotencyRepository
 );
 
 const accountController = new AccountController(accountService);

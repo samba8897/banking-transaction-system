@@ -26,11 +26,13 @@ class TransactionController {
 
   transfer = asyncHandler(async (req, res) => {
     const { fromAccountId, toAccountId, amount } = req.body;
+    const idempotencyKey = req.header('Idempotency-Key');
 
     const result = await this.transactionService.transfer(
       fromAccountId,
       toAccountId,
-      amount
+      amount,
+      idempotencyKey
     );
 
     return sendResponse(res, 200, 'Transfer successful', result);
@@ -38,8 +40,14 @@ class TransactionController {
 
   getAccountTransactions = asyncHandler(async (req, res) => {
     const accountId = Number(req.params.accountId);
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
 
-    const result = await this.transactionService.getAccountTransactions(accountId);
+    const result = await this.transactionService.getAccountTransactions(
+      accountId,
+      page,
+      limit
+    );
 
     return sendResponse(res, 200, 'Transaction history fetched successfully', result);
   });
